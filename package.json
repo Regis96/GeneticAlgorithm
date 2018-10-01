@@ -18,6 +18,7 @@
   "homepage": "https://github.com/Regis96/GeneticAlgorithm#readme",
   "devDependencies": {
     "grunt": "^1.0.3",
+    "grunt-contrib-clean": "^2.0.0",
     "grunt-ts": "^6.0.0-beta.21",
     "typescript": "^3.1.1"
   }

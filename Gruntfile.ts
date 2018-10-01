@@ -3,13 +3,18 @@ module.exports = function (grunt) {
         ts: {
             default: {
                 src: 'src/*.ts',
-                out: 'dist/index.js',
-                watch: '.'
+                outDir: 'dist',
+                watch: '.',
+                options: {
+                    rootDir: 'src'
+                },
             }
-        }
+        },
+        clean: 'dist'
     });
 
-    grunt.loadNpmTasks("grunt-ts");
+    grunt.loadNpmTasks('grunt-ts');
+    grunt.loadNpmTasks('grunt-contrib-clean');
 
-    grunt.registerTask("default", ["ts"]);
+    grunt.registerTask('default', ['clean' ,'ts']);
 };
