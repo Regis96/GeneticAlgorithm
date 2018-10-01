@@ -1,9 +1,4 @@
-class Hello{
-    constructor(){
-        console.log('hello');
-    }
-}
+import { Population } from './population';
+import { Chromosome } from './chromosome';
 
-var hi = new Hello();
-
-console.log(hi);
+var population = new Population(5);

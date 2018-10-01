@@ -3,14 +3,14 @@ module.exports = function (grunt) {
         ts: {
             default: {
                 src: 'src/*.ts',
-                outDir: 'dist',
+                out: 'dist/index.js',
                 watch: '.',
                 options: {
                     rootDir: 'src'
                 },
             }
         },
-        clean: 'dist'
+        clean: 'dist/*'
     });
 
     grunt.loadNpmTasks('grunt-ts');
