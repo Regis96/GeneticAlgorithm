@@ -1,4 +1,3 @@
 /node_modules
-.tscache/default/timestamp
-.tscache/default/hashes/index.ts-f41e9d04a45c83f3b6f6e630f10117fe
+/.tscache
 /dist
