@@ -1,0 +1,24 @@
+{
+  "name": "genetic",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Regis96/GeneticAlgorithm.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Regis96/GeneticAlgorithm/issues"
+  },
+  "homepage": "https://github.com/Regis96/GeneticAlgorithm#readme",
+  "devDependencies": {
+    "grunt": "^1.0.3",
+    "grunt-ts": "^6.0.0-beta.21",
+    "typescript": "^3.1.1"
+  }
+}
