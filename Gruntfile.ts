@@ -3,7 +3,7 @@ module.exports = function (grunt) {
         ts: {
             default: {
                 src: 'src/*.ts',
-                out: 'dist/index.js',
+                outDir: 'dist',
                 watch: '.',
                 options: {
                     rootDir: 'src'
