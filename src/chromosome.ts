@@ -5,14 +5,14 @@ export class Chromosome {
 
     constructor() {}
 
-    randomInitialization(quantityOfGenes, lowerBoundary, upperBoundary) {
+    randomInitialization(quantityOfGenes : number, lowerBoundary : number, upperBoundary : number) {
         for (let i = 0; i < quantityOfGenes; i++) {
             this.genes.push(Math.random() * (upperBoundary - lowerBoundary) + lowerBoundary);
         }
         return this;
     }
 
-    parentalInitialization(father : Chromosome, mother : Chromosome, lowerBoundary, upperBoundary){
+    parentalInitialization(father : Chromosome, mother : Chromosome, lowerBoundary : number, upperBoundary : number){
         for(let i = 0; i < father.genes.length; i++){
             this.genes.push(Math.random() >= 0.5 ? mother.genes[i] : father.genes[i]);
         }
