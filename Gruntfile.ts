@@ -6,7 +6,8 @@ module.exports = function (grunt) {
                 outDir: 'dist',
                 watch: '.',
                 options: {
-                    rootDir: 'src'
+                    rootDir: 'src',
+                    additionalFlags : '--noImplicitUseStrict'
                 },
             }
         },

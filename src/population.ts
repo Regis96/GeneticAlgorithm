@@ -72,10 +72,10 @@ export class Population{
     //verifica condições se deve terminar a execução
     termination(){
         this.iterations++;
-        // if(this.iterations === 10000){
-        //     this.winnerChromosome = this.chromossomes[0];
-        //     return true;
-        // }
+        if(this.iterations === 10000){
+            this.winnerChromosome = this.chromossomes[0];
+            return true;
+        }
         this.setFitness();
         if(this.iterations % 1000 === 0 ){
             console.log('Maior fitness:' + this.chromossomes[0].fitness);
