@@ -1,21 +1,20 @@
 export class GameUtil {
-    hasRun = false;
+    rl = require('readline');
 
     constructor(){}
 
     printBoard(board : string[][]){
-        if(this.hasRun){
-            console.log('\033[32m');
-        }
+        //process.stdout.write('\033c');
+        this.rl.cursorTo(process.stdout,0,0);
+        process.stdout.clearScreenDown();
         for(let i = 0; i < board.length; i++){
             let string = '';
             for(let k = 0; k < board[i].length; k++){
                 string += board[i][k] + ' ';
             }
-            console.log(string);
+            process.stdout.write(string + '\n');
         }
-
-        this.hasRun = true;
+        this.rl.cursorTo(process.stdout,0,0);
     }
 
 }
