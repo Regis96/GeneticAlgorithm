@@ -7,17 +7,17 @@ enum MOVE_TYPE {
 export class Chromosome {
 
     genes: number[] = [];
-    fitness: number;
+    fitness: number = 0;
     position: number[] = [0,0];
     boardSize: number[];
 
     constructor() {}
 
-    randomInitialization(quantityOfGenes : number, number, boardSize : number[]) {
+    randomInitialization(quantityOfGenes : number, boardSize : number[]) {
         this.boardSize = boardSize;
 
         for (let i = 0; i < quantityOfGenes; i++) {
-            this.genes.push(Math.round(Math.random() * 4));
+            this.genes.push(Math.round(Math.random() * 3));
         }
         return this;
     }
@@ -67,4 +67,7 @@ export class Chromosome {
         this.fitness +=1;
     }
 
+    toString(){
+        return 'Fitness:' + this.fitness + ' - Genes:' + this.genes;
+    }
 }

@@ -1,0 +1,1 @@
+src/chromosome.ts src/game.ts src/index.ts src/population.ts --sourcemap --removeComments --rootDir src --target ES5 --outDir dist --noImplicitUseStrict

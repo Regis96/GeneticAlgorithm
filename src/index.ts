@@ -1,29 +1,63 @@
 import { Population } from './population';
+import { Game } from './game';
+var blessed = require('blessed');
 
-let population = new Population(5);
+const POPULATION_SIZE = 10;
+const NUMBER_OF_MOVES = 20;
+const NUMBER_OF_TURNS = NUMBER_OF_MOVES;
+
+let population = new Population(POPULATION_SIZE);
+population.initialize(NUMBER_OF_MOVES);
+let game = new Game(NUMBER_OF_TURNS,population);
+let done = false;
 
 
-population.initialize(3, -1000, 1000, fitnessFunction);
+let screen = blessed.screen({
+    smartCSR: true
+});
 
-while(!population.termination()){
-    population.deleteUnfit(population.sizeOfPopulation / 2);
-    population.setFitness()
-    population.crossover();
-}
+screen.title = 'Algoritmos Genéticos';
 
+let box = blessed.box({
+    width: '100%',
+    height: '100%'
+});
 
-function fitnessFunction(each){
-    //x ^ 3 + y ^ 2 + z = 1000
-    let result =  Math.pow(each.genes[0], 3) + Math.pow(each.genes[1], 2) + each.genes[2];
-    return result > 1000? 1000 / result : result / 1000
-}
-console.log('x ^ 3 + y ^ 2 + z = 1000');
-console.log('-------------------------------------');
-console.log(population.winnerChromosome.genes[0] + ' ^ 3 + '+ 
-            population.winnerChromosome.genes[1] +' ^ 2 + ' + 
-            population.winnerChromosome.genes[2] + ' = ' + 
-            (
-                Math.pow(population.winnerChromosome.genes[0], 3) + 
-                Math.pow(population.winnerChromosome.genes[1], 2) + 
-                population.winnerChromosome.genes[2]
-            ));
+// Append our box to the screen.
+screen.append(box);
+
+screen.key('enter', function(ch, key){
+    //se tiver que acabar
+    if(!done){
+        if(population.termination()){
+        box.setContent('-------------------------------------------------\n' + 
+                            population.winnerChromosome.toString() +
+                            '\n-------------------------------------------------');
+            screen.render();
+            done = true;
+        }else{
+            if(game.turn <= game.maxTurn){
+                game.nextMove();
+                box.setContent(game.getBoard());
+            }else{
+                box.setContent(population.chromossomes[0].genes.toString());
+                population.deleteUnfit(population.sizeOfPopulation / 2);
+                population.crossover();
+                game = new Game(NUMBER_OF_TURNS,population);
+            }
+            screen.render();
+        }
+    }
+});
+
+// Quit on Escape, q, or Control-C.
+screen.key(['escape', 'q', 'C-c'], function(ch, key) {
+    return process.exit(0);
+});
+
+// Focus our element.
+box.focus();
+
+// Render the screen.
+screen.render();
+

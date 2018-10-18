@@ -1,8 +1,6 @@
-import { GameUtil } from './_gameutil';
 import { Population } from './population';
 
 export class Game{
-    gameUtil : GameUtil;
     turn : number;
     maxTurn: number;
     board : string[][] = [];
@@ -12,17 +10,28 @@ export class Game{
     constructor(maxTurn : number, population : Population){
         this.maxTurn = maxTurn;
         this.population = population;
-        this.gameUtil = new GameUtil();
-        this.turn = 1;
-        this.preRenderBoard();
+        this.turn = 1;       
+     
     }
-    
-    async start(){
-        while(this.turn <= this.maxTurn){
-            this.receiveActions();
-            this.preRenderBoard();
-            this.gameUtil.printBoard(this.board);
+
+    nextMove(){
+        this.receiveActions();
+        this.collisionCheck();
+        this.turn += 1;
+    }
+
+    getBoard(){
+        this.preRenderBoard();
+        let tempBoardString = '';
+
+        for(let line of this.board){
+            for(let cell of line){
+                tempBoardString += cell;
+            }
+            tempBoardString += '\n';
         }
+
+        return tempBoardString;
     }
 
     private preRenderBoard (){
@@ -47,7 +56,6 @@ export class Game{
     private receiveActions(){
         for(let each of this.population.chromossomes){
             each.makeMove(this.turn - 1);
-            this.collisionCheck();
         }
     }
 
@@ -62,5 +70,3 @@ export class Game{
         }
     }
 }
-
-new Game(3, new Population(10)).start();
