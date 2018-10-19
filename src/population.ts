@@ -1,6 +1,6 @@
 import { Chromosome } from './chromosome';
 
-const BOARD_SIZE = [8,8];
+const BOARD_SIZE = [6,6];
 
 export class Population{
 
@@ -77,7 +77,7 @@ export class Population{
     termination(){
         this.iterations++;
         this.orderByFitness();
-        if(this.iterations == 10000){
+        if(this.iterations == 10){
             this.winnerChromosome = this.chromossomes[0];
             return true;
         }
@@ -87,6 +87,10 @@ export class Population{
         if(this.chromossomes[0].fitness === 7){
             this.winnerChromosome = this.chromossomes[0];
             return true;
+        }
+
+        for(var each of this.chromossomes){
+            each.fitness = 0;
         }
         return false;
     }

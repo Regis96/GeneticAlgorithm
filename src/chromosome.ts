@@ -10,6 +10,7 @@ export class Chromosome {
     fitness: number = 0;
     position: number[] = [0,0];
     boardSize: number[];
+    collisions : number[][] = [];
 
     constructor() {}
 
@@ -37,8 +38,8 @@ export class Chromosome {
     makeMove(turn : number){
         switch(this.genes[turn]){
             case MOVE_TYPE.Down:{
-                if(this.position[0] > 0){
-                    this.position[0] -= 1;
+                if(this.position[0] <= this.boardSize[0]){
+                    this.position[0] += 1;
                 }
                 break;
             }
@@ -49,8 +50,8 @@ export class Chromosome {
                 break;
             }
             case MOVE_TYPE.Up:{
-                if(this.position[0] <= this.boardSize[0]){
-                    this.position[0] += 1;
+                if(this.position[0] > 0){
+                    this.position[0] -= 1;
                 }
                 break;
             }
@@ -67,7 +68,44 @@ export class Chromosome {
         this.fitness +=1;
     }
 
+    hasCollidedBefore(plus){
+        for(var each of this.collisions){
+            if(plus[0] === each[0] && plus[1] == each[1]){
+                return true;
+            }
+        }
+        this.collisions.push(plus);
+        return false;
+    }
+
+    getPrettyGenes(){
+            let prettyPrint = '';
+            for(let each of this.genes){
+                switch(each){
+                    case 0:{
+                        prettyPrint += '▼ ';
+                        break;
+                    }
+                    case 1:{
+                        prettyPrint += '► ';
+                        break;
+                    }
+                    case 2:{
+                        prettyPrint += '▲ ';
+                        break;
+                    }
+                    case 3:{
+                        prettyPrint += '◄ '
+                        break;
+                    }
+                }
+            }
+        
+            return prettyPrint;
+        
+    }
+
     toString(){
-        return 'Fitness:' + this.fitness + ' - Genes:' + this.genes;
+        return 'Fitness:' + this.fitness + ' - Genes:' + this.getPrettyGenes();
     }
 }

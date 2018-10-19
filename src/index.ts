@@ -2,7 +2,7 @@ import { Population } from './population';
 import { Game } from './game';
 var blessed = require('blessed');
 
-const POPULATION_SIZE = 10;
+const POPULATION_SIZE = 40;
 const NUMBER_OF_MOVES = 20;
 const NUMBER_OF_TURNS = NUMBER_OF_MOVES;
 
@@ -16,8 +16,6 @@ let screen = blessed.screen({
     smartCSR: true
 });
 
-screen.title = 'Algoritmos Genéticos';
-
 let box = blessed.box({
     width: '100%',
     height: '100%'
@@ -29,25 +27,28 @@ screen.append(box);
 screen.key('enter', function(ch, key){
     //se tiver que acabar
     if(!done){
-        if(population.termination()){
-        box.setContent('-------------------------------------------------\n' + 
-                            population.winnerChromosome.toString() +
-                            '\n-------------------------------------------------');
-            screen.render();
-            done = true;
+        if(!game.isOver()){
+            game.nextMove();
+            box.setContent(game.getBoard(false));
         }else{
-            if(game.turn <= game.maxTurn){
-                game.nextMove();
-                box.setContent(game.getBoard());
+            box.setContent(game.getBoard(true));
+            
+            if(population.termination()){
+                box.setContent('--------------------------------------------------------\n' + 
+                                    population.winnerChromosome +
+                               '\n--------------------------------------------------------');
+                screen.render();
+                done = true;
             }else{
-                box.setContent(population.chromossomes[0].genes.toString());
+                box.insertBottom(population.chromossomes[0].getPrettyGenes());
                 population.deleteUnfit(population.sizeOfPopulation / 2);
                 population.crossover();
                 game = new Game(NUMBER_OF_TURNS,population);
             }
-            screen.render();
         }
+        screen.render();
     }
+    
 });
 
 // Quit on Escape, q, or Control-C.
@@ -57,7 +58,8 @@ screen.key(['escape', 'q', 'C-c'], function(ch, key) {
 
 // Focus our element.
 box.focus();
-
+box.setContent(game.getBoard(false));
 // Render the screen.
 screen.render();
+
 
