@@ -1,3 +1,5 @@
+import { CONSTANTS } from "./constants";
+
 enum MOVE_TYPE {
     Down,
     Right,
@@ -9,13 +11,12 @@ export class Chromosome {
     genes: number[] = [];
     fitness: number = 0;
     position: number[] = [0,0];
-    boardSize: number[];
     collisions : number[][] = [];
+    boardSize : number[] = CONSTANTS.boardSize;
 
     constructor() {}
 
-    randomInitialization(quantityOfGenes : number, boardSize : number[]) {
-        this.boardSize = boardSize;
+    randomInitialization(quantityOfGenes : number) {
 
         for (let i = 0; i < quantityOfGenes; i++) {
             this.genes.push(Math.round(Math.random() * 3));
@@ -23,9 +24,7 @@ export class Chromosome {
         return this;
     }
 
-    parentalInitialization(father : Chromosome, mother : Chromosome, boardSize : number[]){
-        this.boardSize = boardSize;
-
+    parentalInitialization(father : Chromosome, mother : Chromosome){
         for(let i = 0; i < father.genes.length; i++){
             this.genes.push(Math.random() >= 0.5 ? mother.genes[i] : father.genes[i]);
         }
@@ -38,13 +37,13 @@ export class Chromosome {
     makeMove(turn : number){
         switch(this.genes[turn]){
             case MOVE_TYPE.Down:{
-                if(this.position[0] <= this.boardSize[0]){
+                if(this.position[0] < this.boardSize[0] - 1){
                     this.position[0] += 1;
                 }
                 break;
             }
             case MOVE_TYPE.Right:{
-                if(this.position[1] <= this.boardSize[1]){
+                if(this.position[1] < this.boardSize[1] - 1){
                     this.position[1] += 1;
                 }
                 break;

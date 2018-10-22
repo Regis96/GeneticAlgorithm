@@ -1,10 +1,11 @@
 import { Population } from './population';
+import { CONSTANTS } from './constants';
 
 export class Game{
     turn : number;
     maxTurn: number;
     board : string[][] = [];
-    pluses : number[][] = [[0,2],[1,3],[2,5],[4,5],[5,4],[3,1],[6,5]];
+    pluses : number[][] = CONSTANTS.pluses;
     population : Population;
 
     constructor(maxTurn : number, population : Population){
@@ -36,21 +37,22 @@ export class Game{
 
     private preRenderBoard (showFitness : boolean){
         this.board = [];
-        this.board.push([' ',' ',' ',' ',' ',' ',' ',' ']);
-        this.board.push([' ',' ',' ',' ',' ',' ',' ',' ']);
-        this.board.push([' ',' ',' ',' ',' ',' ',' ',' ']);
-        this.board.push([' ',' ',' ',' ',' ',' ',' ',' ']);
-        this.board.push([' ',' ',' ',' ',' ',' ',' ',' ']);
-        this.board.push([' ',' ',' ',' ',' ',' ',' ',' ']);
-        this.board.push([' ',' ',' ',' ',' ',' ',' ',' ']);
-        this.board.push([' ',' ',' ',' ',' ',' ',' ',' ']);
-        this.board.push([' ',' ',' ',' ',' ',' ',' ',' ']);
+        this.board.push([' ',' ',' ',' ',' ',' ',' ']);
+        this.board.push([' ',' ',' ',' ',' ',' ',' ']);
+        this.board.push([' ',' ',' ',' ',' ',' ',' ']);
+        this.board.push([' ',' ',' ',' ',' ',' ',' ']);
+        this.board.push([' ',' ',' ',' ',' ',' ',' ']);
+        this.board.push([' ',' ',' ',' ',' ',' ',' ']);
+        this.board.push([' ',' ',' ',' ',' ',' ',' ']);
+        this.board.push([' ',' ',' ',' ',' ',' ',' ']);
+        this.board.push([' ',' ',' ',' ',' ',' ',' ']);
+
         for(let each of this.pluses){
-            this.board[each[0]][each[1]] = '+';
+            this.board[each[0]][each[1]] = CONSTANTS.plusSymbol;
         }
         if(!showFitness){
             for(let each of this.population.chromossomes){
-                this.board[each.position[0]][each.position[1]] = 'C';
+                this.board[each.position[0]][each.position[1]] = CONSTANTS.chromossomeSymbol;
             }
         }else{
             for(let each of this.population.chromossomes){

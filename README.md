@@ -5,4 +5,4 @@ Para rodar(necessário npm e node instalados):
     grunt
     node dist/index
 
-TODO
+Utilização de algoritmo genético em um simples jogo onde o objetivo é alcançar o maior número de checkpoints.

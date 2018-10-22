@@ -1,65 +1,61 @@
 import { Population } from './population';
 import { Game } from './game';
-var blessed = require('blessed');
-
-const POPULATION_SIZE = 40;
-const NUMBER_OF_MOVES = 20;
-const NUMBER_OF_TURNS = NUMBER_OF_MOVES;
-
-let population = new Population(POPULATION_SIZE);
-population.initialize(NUMBER_OF_MOVES);
-let game = new Game(NUMBER_OF_TURNS,population);
-let done = false;
+import { CONSTANTS } from './constants';
+import { PrettyScreen } from './prettyScreen';
 
 
-let screen = blessed.screen({
-    smartCSR: true
-});
+let population = new Population(CONSTANTS.populationSize);
+population.initialize(CONSTANTS.numberOfMoves);
+let game = new Game(CONSTANTS.numberOfTurns,population);
+let isOver = false;
+let prettyScreen = new PrettyScreen();
 
-let box = blessed.box({
-    width: '100%',
-    height: '100%'
-});
 
-// Append our box to the screen.
-screen.append(box);
+prettyScreen.on('enter', forward);
+prettyScreen.on('f', finish);
 
-screen.key('enter', function(ch, key){
-    //se tiver que acabar
-    if(!done){
+
+function forward(){
+    if(!isOver){
         if(!game.isOver()){
             game.nextMove();
-            box.setContent(game.getBoard(false));
+            prettyScreen.print(game.getBoard(false));
         }else{
-            box.setContent(game.getBoard(true));
+            prettyScreen.print(game.getBoard(true));
             
             if(population.termination()){
-                box.setContent('--------------------------------------------------------\n' + 
-                                    population.winnerChromosome +
-                               '\n--------------------------------------------------------');
-                screen.render();
-                done = true;
+                prettyScreen.print(printWinnerScreen());
+                isOver = true;
             }else{
-                box.insertBottom(population.chromossomes[0].getPrettyGenes());
+                prettyScreen.appendToScreen(population.chromossomes[0].getPrettyGenes());
                 population.deleteUnfit(population.sizeOfPopulation / 2);
                 population.crossover();
-                game = new Game(NUMBER_OF_TURNS,population);
+                game = new Game(CONSTANTS.numberOfTurns,population);
             }
         }
-        screen.render();
     }
-    
-});
+}
 
-// Quit on Escape, q, or Control-C.
-screen.key(['escape', 'q', 'C-c'], function(ch, key) {
-    return process.exit(0);
-});
+function finish(){
+    do{
+        while(!game.isOver){
+            game.nextMove();
+        }
+        if(population.termination()){
+            prettyScreen.print(printWinnerScreen());
+            isOver = true;
+        }else{
+            population.deleteUnfit(population.sizeOfPopulation / 2);
+            population.crossover();
+            game = new Game(CONSTANTS.numberOfTurns,population);
+        }
+    }while(!isOver);    
+}
 
-// Focus our element.
-box.focus();
-box.setContent(game.getBoard(false));
-// Render the screen.
-screen.render();
+function printWinnerScreen(){
+    return ('-------------------------------------------------------------------\n' + 
+            'Vencedor: ' + population.winnerChromosome + '\nRounds: ' + population.iterations +
+            '\n-------------------------------------------------------------------');
+}
 
-
+prettyScreen.print(game.getBoard(false))

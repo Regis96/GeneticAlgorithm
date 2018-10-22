@@ -1,6 +1,6 @@
 import { Chromosome } from './chromosome';
+import { CONSTANTS } from './constants';
 
-const BOARD_SIZE = [6,6];
 
 export class Population{
 
@@ -20,8 +20,7 @@ export class Population{
         for(let i = 0; i < this.sizeOfPopulation; i++){
             this.chromossomes.push(
                 new Chromosome().randomInitialization(
-                        this.quantityOfGenes, 
-                        BOARD_SIZE
+                        this.quantityOfGenes
                     )
             );
         }
@@ -50,8 +49,7 @@ export class Population{
                 new Chromosome()
                     .parentalInitialization(
                         this.chromossomes[i], 
-                        this.chromossomes[i + 1],
-                        BOARD_SIZE
+                        this.chromossomes[i + 1]
                     )
             );
 
@@ -59,8 +57,7 @@ export class Population{
                 new Chromosome()
                     .parentalInitialization(
                         this.chromossomes[i], 
-                        this.chromossomes[i + 1],
-                        BOARD_SIZE
+                        this.chromossomes[i + 1]
                     )
             );
         }        
@@ -77,14 +74,12 @@ export class Population{
     termination(){
         this.iterations++;
         this.orderByFitness();
-        if(this.iterations == 10){
+        if(this.iterations == CONSTANTS.maxIteration){
             this.winnerChromosome = this.chromossomes[0];
             return true;
         }
-        if(this.iterations % 1000 == 0 ){
-            console.log('Maior fitness(pontuação):' + this.chromossomes[0].fitness);
-        }
-        if(this.chromossomes[0].fitness === 7){
+
+        if(this.chromossomes[0].fitness === CONSTANTS.quantityOfPluses){
             this.winnerChromosome = this.chromossomes[0];
             return true;
         }
